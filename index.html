@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER — Проекты</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* СЛОЖНАЯ ГАРМОНИЗИРОВАННАЯ ПАЛИТРА */
+            --text: #26211e;         /* Глубокий кофейно-графитовый (идеально рифмуется с черными смесителями и треками) */
+            --muted:  #000000;        /* Благородный каменный грейж для описаний */
+            --gold: #bda093;         /* Приглушенное розовое золото (взято напрямую из прожилок пола pink.jpg) */
+            --gold-bright: #cca385;  /* Мягкое сияние вечерней подсветки для акцентов */
+            --border: rgba(189, 160, 147, 0.25); /* Тонкие благородные границы */
+            --glass: rgba(252, 250, 247, 0.78);  /* Теплый матовый фильтр, сглаживающий контраст фона */
+            --glass-dark: rgba(245, 240, 235, 0.92);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            /* В качестве подложки используем входную зону — она задает люксовый тон с первых секунд */
+            background-image: url('pink.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        img {
+            width: 100%;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: min(1400px, 92%);
+            margin: auto;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(252, 250, 247, 0.75);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-wrapper {
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 34px;
+            letter-spacing: 4px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 36px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            position: relative;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: var(--text);
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: 0.4s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        /* INTRO */
+        .intro {
+            padding-top: 200px;
+            padding-bottom: 120px;
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: end;
+        }
+
+        .section-label {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 12px;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .intro h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(50px, 8vw, 120px);
+            line-height: 0.95;
+            font-weight: 500;
+            color: var(--text);
+            text-shadow: 0 2px 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .intro-text {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            color: var(--text);
+            line-height: 2;
+            font-size: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        /* PROJECT */
+        .project {
+            padding: 120px 0;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .project.reverse .project-grid {
+            grid-template-columns: 0.9fr 1.1fr;
+        }
+
+        .project-image {
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
+        }
+
+        .project-image img {
+            height: 750px;
+            object-fit: cover;
+            transition: 1.2s;
+        }
+
+        .project-image:hover img {
+            transform: scale(1.03);
+        }
+
+        .project-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 110px;
+            color: rgba(189, 160, 147, 0.3);
+            line-height: 1;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .project-category {
+            color: var(--gold-bright);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 11px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        /* ИСПРАВЛЕННАЯ ОШИБКА СТИЛЕЙ ТУТ */
+        .project-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(40px, 5vw, 76px);
+            line-height: 1.1;
+            margin-bottom: 28px;
+            font-weight: 500;
+        }
+
+        .project-description {
+            color: var(--muted);
+            line-height: 1.9;
+            margin-bottom: 50px;
+            max-width: 520px;
+            font-size: 15px;
+        }
+
+        .project-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 26px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 24px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .meta-item {
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            padding-top: 16px;
+        }
+
+        .meta-item:nth-child(1),
+        .meta-item:nth-child(2) {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .meta-title {
+            color: var(--muted);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .meta-value {
+            color: var(--text);
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* MATERIALS */
+        .materials {
+            padding: 140px 0;
+        }
+
+        .materials-head {
+            margin-bottom: 70px;
+        }
+
+        .materials-head h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(54px, 8vw, 100px);
+            line-height: 0.95;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .materials-head p {
+            color: var(--muted);
+            line-height: 1.9;
+            max-width: 700px;
+            font-size: 16px;
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .material-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .material-card img {
+            height: 420px;
+            object-fit: cover;
+            transition: 1s;
+        }
+
+        .material-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .material-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(38, 33, 30, 0.85), transparent 60%);
+            z-index: 1;
+        }
+
+        .material-info {
+            position: absolute;
+            left: 24px;
+            bottom: 24px;
+            z-index: 2;
+        }
+
+        .material-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 34px;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+
+        .material-desc {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+        }
+
+        /* PROCESS */
+        .process {
+            padding: 140px 0;
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .process-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 30px 24px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.02);
+            transition: 0.4s;
+        }
+
+        .process-card:hover {
+            transform: translateY(-5px);
+            background: var(--glass-dark);
+            border-color: var(--gold);
+        }
+
+        .process-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 60px;
+            color: var(--gold);
+            margin-bottom: 12px;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .process-card h3 {
+            margin-bottom: 14px;
+            font-size: 19px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .process-card p {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* ABOUT */
+        .about {
+            padding: 140px 0;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .about-image {
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.06);
+        }
+
+        .about-image img {
+            height: 650px;
+            object-fit: cover;
+        }
+
+        .about-content {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            padding: 50px;
+            border-radius: 24px;
+        }
+
+        .about h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(42px, 6vw, 80px);
+            line-height: 1;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .about p {
+            color: var(--muted);
+            line-height: 1.9;
+            font-size: 16px;
+        }
+
+        /* CONTACTS */
+        .contacts {
+            padding: 140px 0;
+            text-align: center;
+        }
+
+        .contacts-box {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--glass-dark);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            padding: 80px 40px;
+            border-radius: 32px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
+        }
+
+        .contacts h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(54px, 8vw, 110px);
+            line-height: 0.95;
+            margin-bottom: 30px;
+        }
+
+        .contacts p {
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 50px;
+            line-height: 1.9;
+            font-size: 17px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 22px 50px;
+            background: var(--text);
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: 0.4s;
+            box-shadow: 0 10px 25px rgba(38, 33, 30, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            background: var(--gold);
+            box-shadow: 0 10px 25px rgba(189, 160, 147, 0.3);
+        }
+
+        .contact-links {
+            margin-top: 60px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .contact-links a {
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .contact-links a:hover {
+            color: var(--gold);
+        }
+
+        /* FOOTER */
+        footer {
+            background: rgba(252, 250, 247, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 50px 0;
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-text {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1100px) {
+            .intro-grid,
+            .project-grid,
+            .project.reverse .project-grid,
+            .about-grid {
+                grid-template-columns: 1fr !important;
+                gap: 40px;
+            }
+
+            .materials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .process-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .project-image img {
+                height: 550px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+            }
+
+            .nav-wrapper {
+                height: auto;
+                padding: 20px 0;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 20px;
+            }
+
+            .intro {
+                padding-top: 180px;
+                padding-bottom: 60px;
+            }
+
+            .materials-grid,
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-image img,
+            .about-image img {
+                height: 380px;
+            }
+
+            .material-card img {
+                height: 320px;
+            }
+
+            .project-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .about-content {
+                padding: 30px 20px;
+            }
+
+            .contacts-box {
+                padding: 50px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="container nav-wrapper">
+            <div class="logo">ATELIER</div>
+            <div class="nav-links">
+                <a href="#projects">Проекты</a>
+                <a href="#materials">Фактуры</a>
+                <a href="#process">Процесс</a>
+                <a href="#about">О нас</a>
+                <a href="#contacts">Контакты</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="intro" id="projects">
+        <div class="container intro-grid">
+            <div>
+                <div class="section-label">Портфолио студии</div>
+                <h1>Проекты,<br>созданные<br>для жизни</h1>
+            </div>
+            <div class="intro-text">
+                Каждое пространство ATELIER создаётся вокруг ощущений — тишины, архитектурного света, приватности и идеального баланса между урбанистичным монохромом и теплом натуральных текстур.
+            </div>
+        </div>
+    </section>
+
+    <section class="project">
+        <div class="container project-grid">
+            <div class="project-image">
+                <img src="kitchen.jpg" alt="Skyline Residence Kitchen">
+            </div>
+            <div>
+                <div class="project-number">01</div>
+                <div class="project-category">Пентхаус · Рига</div>
+                <div class="project-title">Skyline Residence</div>
+                <div class="project-description">
+                    Современный интерьер, построенный на строгой геометрии, глубоких серых оттенках бетона и контрастной графике трековых систем. Чистые линии смягчены сложными световыми сценариями.
+                </div>
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <div class="meta-title">Площадь</div>
+                        <div class="meta-value">140 м²</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-title">Срок реализации</div>
+                        <div class="meta-value">8 месяцев</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-title">Характер</div>
+                        <div class="meta-value">Архитектурный монохром</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-title">Узлы</div>
+                        <div class="meta-value">Скрытый трек · Матовый графит</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="project reverse">
+        <div class="container project-grid">
+            <div>
+                <div class="project-number">02</div>
+                <div class="project-category">Частная вилла · Юрмала</div>
+                <div class="project-title">Quiet Geometry</div>
+                <div class="project-description">
+                    Минималистичная концепция, раскрывающая тепло деревянных реек, деликатность мраморных панно и обволакивающий скрытый свет, создающий ощущение бесконечного уюта.
+                </div>
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <div class="meta-title">Площадь</div>
+                        <div class="meta-value">320 м²</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-title">Локация</div>
+                        <div class="meta-value">Прибрежная зона</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-title">Концепция</div>
+                        <div class="meta-value">Мягкий минимализм</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-title">Акценты</div>
+                        <div class="meta-value">Шампань · Орех · LED-контуры</div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-image">
+                <img src="tv.jpg" alt="Quiet Geometry Living Room">
+            </div>
+        </div>
+    </section>
+
+    <section class="materials" id="materials">
+        <div class="container">
+            <div class="materials-head">
+                <div class="section-label">Архитектурные приёмы</div>
+                <h2>Детали<br>и микроклимат</h2>
+                <p>Мы собираем интерьер из ощущений: от графичных линий скрытого света до тактильности сланцевой плитки в ванной комнате.</p>
+            </div>
+            <div class="materials-grid">
+                <div class="material-card">
+                    <img src="batroom1.jpg" alt="Ванная комната">
+                    <div class="material-info">
+                        <div class="material-name">Текстурный сланец</div>
+                        <div class="material-desc">Стыковка матового графита и дерева</div>
+                    </div>
+                </div>
+                <div class="material-card">
+                    <img src="kor.jpg" alt="Коридор свет">
+                    <div class="material-info">
+                        <div class="material-name">Линейный свет</div>
+                        <div class="material-desc">Встроенные световые профили</div>
+                    </div>
+                </div>
+                <div class="material-card">
+                    <img src="mirror.jpg" alt="Зеркало в прихожей">
+                    <div class="material-info">
+                        <div class="material-name">Световые порталы</div>
+                        <div class="material-desc">Интегрированная подсветка зеркал</div>
+                    </div>
+                </div>
+                <div class="material-card">
+                    <img src="sofia.jpg" alt="Гостиная диван">
+                    <div class="material-info">
+                        <div class="material-name">Мягкий контраст</div>
+                        <div class="material-desc">Благородный текстиль в массе</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process" id="process">
+        <div class="container">
+            <div class="section-label">Как мы работаем</div>
+            <div class="process-grid">
+                <div class="process-card">
+                    <div class="process-number">01</div>
+                    <h3>Стратегия</h3>
+                    <p>Анализируем образ жизни клиента и архитектуру пространства.</p>
+                </div>
+                <div class="process-card">
+                    <div class="process-number">02</div>
+                    <h3>Концепция</h3>
+                    <p>Создаём визуальную идею проекта и атмосферу интерьера.</p>
+                </div>
+                <div class="process-card">
+                    <div class="process-number">03</div>
+                    <h3>Реализация</h3>
+                    <p>Полностью сопровождаем стройку и контролируем детали.</p>
+                </div>
+                <div class="process-card">
+                    <div class="process-number">04</div>
+                    <h3>Финальный стиль</h3>
+                    <p>Подбираем декор, свет и финальные акценты пространства.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container about-grid">
+            <div class="about-image">
+                <img src="vision.jpg" alt="Студия интерьера">
+            </div>
+            <div class="about-content">
+                <div class="section-label">О студии</div>
+                <h2>Мы проектируем пространства, в которых хочется жить</h2>
+                <p>
+                    ATELIER — студия премиальных интерьеров, объединяющая строгий архитектурный подход, натуральные материалы и бескомпромиссное внимание к деталям. Мы умеем подружить брутальный характер современного мегаполиса с мягким, обволакивающим комфортом.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contacts" id="contacts">
+        <div class="container contacts-box">
+            <h2>Обсудим<br>ваш проект</h2>
+            <p>Создадим интерьер, который будет выглядеть дорого, ощущаться спокойно и работать на ваш стиль жизни.</p>
+            <a href="mailto:atelier@email.com" class="btn">Связаться с нами</a>
+            <div class="contact-links">
+                <a href="tel:+7(977)341-71-34">+7(977)341-71-34</a>
+                <a href="#!">Instagram</a>
+                <a href="#!">Telegram</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="logo">ATELIER</div>
+            <div class="footer-text">Luxury Interior Studio © 2026</div>
+        </div>
+    </footer>
+
+</body>
+</html>
